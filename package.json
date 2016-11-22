@@ -1,0 +1,15 @@
+{
+  "name": "text",
+  "version": "0.0.0",
+  "description": "text",
+  "main": "app.js",
+  "author": {
+    "name": "Lisandro"
+  },
+  "dependencies": {
+    "express": "3.4.4",
+    "jade": "*",
+    "mysql": "^2.11.1",
+    "stylus": "*"
+  }
+}

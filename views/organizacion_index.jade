@@ -1,0 +1,26 @@
+﻿extends layout
+
+block content  	
+	h2 Tabla Organizaciones
+	section
+		a(href='organizacion/nueva') Crear
+		if organizacion.length == 0
+			p No existen personas en la base de datos
+		else
+			table
+				tr
+					th Id
+					th Nombre					
+					th Direccion
+					th Telefono					
+					th Correo
+					th Editar
+				for organiza in organizacion
+					tr
+						td=organiza.id_organizacion
+						td=organiza.nombre						  
+						td=organiza.direccion                
+						td=organiza.telefono						
+						td=organiza.correo
+						td 
+							a(href='organizacion/editar/#{organiza.id_organizacion}') Editar

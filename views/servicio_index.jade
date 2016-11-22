@@ -1,0 +1,23 @@
+﻿extends layout
+
+block content  	
+	h2 Tabla Servicios
+	section
+		a(href='servicio/nueva') Crear
+		if servicio.length == 0
+			p No existen personas en la base de datos
+		else
+			table
+				tr
+					th Codigo
+					th Nombre					
+					th Estado
+					th Descripción				
+				for service in servicio
+					tr
+						td=service.codigo
+						td=service.nombre						  
+						td=service.estado                
+						td=service.descripcion					
+						td 
+							a(href='servicio/editar/#{service.codigo}') Editar

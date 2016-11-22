@@ -1,0 +1,18 @@
+﻿extends layout
+
+block content  	
+	section
+		form(method='post')			
+			if servicio.length == 0
+				p No existen servicios en la base de datos
+			else			
+				label Nombre:
+				input(name='nombre', value='#{servicio[0].nombre}')			
+				br
+				label Estado:
+				input(name='estado', value='#{servicio[0].estado}')
+				br
+				label Descripción:
+				input(name='descripcion', value='#{servicio[0].descripcion}')				
+				br
+				input(type='submit', value='Actualizar')

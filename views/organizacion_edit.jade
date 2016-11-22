@@ -1,0 +1,21 @@
+﻿extends layout
+
+block content  	
+	section
+		form(method='post')			
+			if organizacion.length == 0
+				p No existen organizaciones en la base de datos
+			else			
+				label Nombre:
+				input(name='nombre', value='#{organizacion[0].nombre}')			
+				br
+				label Direccion:
+				input(name='direccion', value='#{organizacion[0].direccion}')
+				br
+				label Teléfono:
+				input(name='telefono', value='#{organizacion[0].telefono}')
+				br
+				label Correo:
+				input(name='correo', value='#{organizacion[0].correo}')
+				br
+				input(type='submit', value='Actualizar')

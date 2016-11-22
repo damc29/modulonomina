@@ -1,0 +1,64 @@
+﻿var UserModel = require('../models/UsuarioModel');
+
+module.exports = {
+    home: function (req, res, next) {
+        UserModel.getUsuario(function (error, data) {
+            res.render('usuario_index', { usuarios: data });
+        });
+    },
+    add: function (req, res, next) {
+        res.render('usuario_add');
+
+    },
+    edit: function (req, res, next) {
+        var codigo = req.params.id_persona;
+        console.log('El codigo es: ' + codigo);
+        UserModel.editUsuario(codigo, function (error, data) {
+            if (typeof data !== 'undefined' && data.length > 0) {
+                res.render("usuario_edit",
+                    {
+                        usuarios: data
+                    });
+            }
+        });
+    },
+    save_edit: function (req, res, next) {
+
+        var usuarioData = {
+            id_persona: req.params.id_persona,
+            usuario: req.body.usuario,
+            contrasena: req.body.contrasena,
+            rol: req.body.rol,
+            fecha_creacion: req.body.fecha_creacion
+        };
+        UserModel.updateUsuario(usuarioData, function (error, data) {
+            if (typeof data !== 'undefined') {
+                res.redirect('/usuario');
+            }
+            else {
+                res.json(500, { "msg": "Error" });
+            }
+        });
+
+    },
+    guardar: function (req, res, next) {
+
+        var usuarioData = {
+            id_persona: req.params.id_persona,
+            usuario: req.body.usuario,
+            contrasena: req.body.contrasena,
+            rol: req.body.rol,
+            fecha_creacion: req.body.fecha_creacion
+        };
+        UserModel.insertUsuario(usuarioData, function (error, data) {
+            //            //si la persona se ha insertado correctamente mostramos su info
+            console.log(data);
+            if (typeof data !== 'undefined') {
+                res.redirect('/usuario');
+            }
+            else {
+                res.json(500, { "msg": "Error" });
+            }
+        });
+    }
+};

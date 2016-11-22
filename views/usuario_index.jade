@@ -1,0 +1,25 @@
+﻿extends layout
+
+block content  	
+	h2 Tabla Usuarios
+	section
+		a(href='servicio/nueva') Crear
+		if usuarios.length == 0
+			p No existen usuarios en la base de datos
+		else
+			table
+				tr
+					th Id_persona
+					th Usuario					
+					th Contraseña
+					th Rol				
+					th Fecha de creación
+				for usuario in usuarios
+					tr
+						td=usuario.id_persona
+						td=usuairo.usuario						  
+						td=usuario.contrasena                
+						td=usuario.rol					
+						td=usuario.fecha_creacion
+						td 
+							a(href='usuario/editar/#{usuario.id_persona}') Editar

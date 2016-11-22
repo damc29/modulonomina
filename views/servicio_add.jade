@@ -1,0 +1,15 @@
+﻿extends layout
+
+block content  	
+	section
+		form(method='post')		
+			label Nombre:
+			input(name='nombre')			
+			br
+			label Estado:
+			input(name='estado')
+			br
+			label Descripción:
+			input(name='descripcion')		
+			br
+			input(type='submit', value='Guardar')

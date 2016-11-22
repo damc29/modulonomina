@@ -1,0 +1,39 @@
+﻿extends layout
+
+block content 		
+	section
+		form(method='post')			
+			label Cedula:
+			input(name='id')
+			br
+			script(type='text/javascript' src='https://ajax.googleapis.com/ajax/libs/jquery/2.1.3/jquery.min.js')
+			script(type='text/javascript' src='/socket.io/socket.io.js').
+				var socket=io.connect();
+				var lista=document.getElementById('listDocumento');
+				
+				socket.on("tipo_documento", function(data){
+				var tamanio=data.length;				
+				for(var i=0; i<tamanio;i++){
+					lista.options[i]=new Option(data[i].nombre,data[i].id);
+				}			  
+			select(name='listDocumento', id='listDocumento')
+			br
+			label Nombres:
+			input(name='nombres')
+			br
+			label apellidos:
+			input(name='apellidos')
+			br
+			label Direccion:
+			input(name='direccion')
+			br
+			label Telefono1:
+			input(name='telefono1')
+			br
+			label Telefono2:
+			input(name='telefono2')
+			br
+			label Correo:
+			input(name='correo')
+			br
+			input(type='submit', value='Guardar')

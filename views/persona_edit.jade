@@ -1,0 +1,27 @@
+﻿extends layout
+
+block content  	
+	section
+		form(method='post')			
+			if persona.length == 0
+				p No existen universidades en la base de datos
+			else			
+				label Nombres:
+				input(name='nombres', value='#{persona[0].nombres}')
+				br
+				label apellidos:
+				input(name='apellidos', value='#{persona[0].apellidos}')
+				br
+				label Direccion:
+				input(name='direccion', value='#{persona[0].direccion}')
+				br
+				label Telefono1:
+				input(name='telefono1', value='#{persona[0].telefono1}')
+				br
+				label Telefono2:
+				input(name='telefono2', value='#{persona[0].telefono2}')
+				br
+				label Correo:
+				input(name='correo', value='#{persona[0].correo}')
+				br
+				input(type='submit', value='Actualizar')
