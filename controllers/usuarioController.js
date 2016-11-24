@@ -63,44 +63,45 @@ module.exports = {
     },
     //Metodos para la API REST
     listar: function (req, res, next) {
-        UserModel.getServicio(function (error, data)
+        UserModel.getUsuario(function (error, data)
         {
             res.status(200)
             .json({
                 status: 'success',
-                servicio: data,
+                usuarios: data,
                 message: 'Retrieved ALL Usuario'
             });            
         });
     },
     consultar: function (req, res, next)
     {
-        var id_persona = req.params.id;
+        var codigo = req.params.id_persona;
       
-        UserModel.getSingleServicio(id_persona, function (error, data) {
+        UserModel.getSingleUsuario(codigo, function (error, data) {
             if (typeof data !== 'undefined' && data.length > 0) {
                 res.status(200)
                 .json({
                     status: 'success',
-                    servicio: data,
+                    usuario: data,
                     message: 'Inserted one Usuario'
                 });
             }
         });        
     },
     crear: function (req, res, next) {
-        var servicioData = {
-            codigo: null,
-            nombre: req.body.nombre,
-            estado: req.body.estado,
-            descripcion: req.body.descripcion
+        var usuarioData = {
+            id_persona: req.params.id_persona,
+            usuario: req.body.usuario,
+            contrasena: req.body.contrasena,
+            rol: req.body.rol,
+            fecha_creacion: req.body.fecha_creacion
         };
-        UserModel.insertServicio(servicioData, function (error, data) {
+        UserModel.insertUsuario(usuarioData, function (error, data) {
             if (typeof data !== 'undefined') {
                 res.status(200)
                 .json({
                     status: 'success',
-                    servicio: data,
+                    usuario: data,
                     message: 'Inserted one Usuario'
                 });
             }
@@ -111,18 +112,19 @@ module.exports = {
     },
     editar: function (req, res, next) {
         
-        var servicioData = {
-            codigo: req.params.id,
-            nombre: req.body.nombre,
-            estado:req.body.estado,
-            descripcion: req.body.descripcion
+        var usuarioData = {
+            id_persona: req.params.id_persona,
+            usuario: req.body.usuario,
+            contrasena: req.body.contrasena,
+            rol: req.body.rol,
+            fecha_creacion: req.body.fecha_creacion
         };
-        UserModel.updateServicio(servicioData, function (error, data) {
+        UserModel.updateUsuario(usuarioData, function (error, data) {
             if (typeof data !== 'undefined') {
                 res.status(200)
                 .json({
                     status: 'success',
-                    servicio: data,
+                    usuario: data,
                     message: 'Inserted one Usuario'
                 });
             }

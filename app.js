@@ -8,6 +8,7 @@ var http = require('http');
 var path = require('path');
 var app = express();
 var mysql = require('mysql');
+var cors = require("cors");
 
 // all environments
 //app.use(app.router);
@@ -25,6 +26,8 @@ app.use(express.methodOverride());
 app.use(app.router);
 app.use(require('stylus').middleware(path.join(__dirname, 'public')));
 app.use(express.static(path.join(__dirname, 'public')));
+app.use(cors());
+
 // development only
 if ('development' == app.get('env')) {
     app.use(express.errorHandler());
