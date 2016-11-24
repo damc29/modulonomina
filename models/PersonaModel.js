@@ -8,7 +8,8 @@
 //    });
 //});
 module.exports = {
-    
+
+    //obtener todos los usuarios    
     getUsers: function (callback) {
         
         if (connection) {
@@ -24,7 +25,7 @@ module.exports = {
         }
     },
 
-//añadir un nuevo usuario
+    //añadir un nuevo usuario
     insertUser : function (personaData, callback) {
         if (connection) {
             
@@ -39,7 +40,8 @@ module.exports = {
         }
     },
 
-    editPersona: function (persona_id, callback) {
+    //obtener un usuario especifico
+    getSingleUser: function (persona_id, callback) {
         if (connection)
         {
             var sql = 'select * from persona where id_persona= ' + persona_id;

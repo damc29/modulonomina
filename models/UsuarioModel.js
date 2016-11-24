@@ -29,7 +29,7 @@ module.exports = {
         }
     },
 
-    editUsuario: function (id_persona, callback) {
+    getSingleUsuario: function (id_persona, callback) {
         if (connection) {
             var sql = 'select * from usuario where id_persona= ' + id_persona;
             connection.query(sql,

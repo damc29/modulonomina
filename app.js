@@ -45,6 +45,11 @@ app.get('/persona/nueva', persona.add);
 app.post('/persona/nueva', persona.guardar);
 app.get('/persona/editar/:id', persona.edit);
 app.post('/persona/editar/:id', persona.save_edit);
+//Persona RESTAPI++++++++++++++++++++++++++++++++++++++++++++
+app.get('/api/persona', persona.listar);
+app.get('/api/persona/:id', persona.consultar);
+app.post('/api/persona', persona.crear);
+app.put('/api/persona/:id', persona.editar);
 //+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
 //OrganizacionController++++++++++++++++++++++++++++++++++++++++++++
@@ -54,6 +59,11 @@ app.get('/organizacion/nueva', organizacion.add);
 app.post('/organizacion/nueva', organizacion.guardar);
 app.get('/organizacion/editar/:id', organizacion.edit);
 app.post('/organizacion/editar/:id', organizacion.save_edit);
+//Organizacion RESTAPI++++++++++++++++++++++++++++++++++++++++++++
+app.get('/api/organizacion', organizacion.listar);
+app.get('/api/organizacion/:id', organizacion.consultar);
+app.post('/api/organizacion', organizacion.crear);
+app.put('/api/organizacion/:id', organizacion.editar);
 //+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
 //ServicioController++++++++++++++++++++++++++++++++++++++++++++
@@ -63,4 +73,9 @@ app.get('/servicio/nueva', servicio.add);
 app.post('/servicio/nueva', servicio.guardar);
 app.get('/servicio/editar/:id', servicio.edit);
 app.post('/servicio/editar/:id', servicio.save_edit);
+//Servicio RESTAPI++++++++++++++++++++++++++++++++++++++++++++
+app.get('/api/servicio', servicio.listar);
+app.get('/api/servicio/:id', servicio.consultar);
+app.post('/api/servicio', servicio.crear);
+app.put('/api/servicio/:id', servicio.editar);
 //+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++

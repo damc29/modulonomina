@@ -28,7 +28,7 @@ module.exports = {
         }
     },
 
-    editServicio: function (servicio_codigo, callback) {
+    getSingleServicio: function (servicio_codigo, callback) {
         if (connection) {
             var sql = 'select * from servicio where codigo= ' + servicio_codigo;
             connection.query(sql,
