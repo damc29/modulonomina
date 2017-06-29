@@ -2,20 +2,25 @@
 
 block content  	
 	section
-		form(method='post')			
-			label NIT:
-			input(name='id')
-			br
-			label Nombre:
-			input(name='nombre')			
-			br
-			label Direccion:
-			input(name='direccion')
-			br
-			label Teléfono:
-			input(name='telefono')			
-			br
-			label Correo:
-			input(name='correo')
-			br
-			input(type='submit', value='Guardar')
+		form(role="form" method='post')
+			.form-group			
+				label NIT:
+				input.form-control(name='id')
+				br
+			.form-group
+				label Nombre:
+				input.form-control(name='nombre')		
+				br
+			.form-group
+				label Direccion:
+				input.form-control(name='direccion')
+				br
+			.form-group
+				label Teléfono:
+				input.form-control(name='telefono')		
+				br
+			.form-group
+				label Correo:
+				input.form-control(name='correo')
+				br
+			input.btn.btn-default(type='submit', value='Guardar')

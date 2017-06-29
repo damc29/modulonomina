@@ -1,56 +1,154 @@
--- --------------------------------------------------------
--- Host:                         127.0.0.1
--- Versión del servidor:         5.5.27 - MySQL Community Server (GPL)
--- SO del servidor:              Win64
--- HeidiSQL Versión:             8.3.0.4694
--- --------------------------------------------------------
+-- phpMyAdmin SQL Dump
+-- version 4.6.4
+-- https://www.phpmyadmin.net/
+--
+-- Servidor: 127.0.0.1
+-- Tiempo de generación: 14-06-2017 a las 20:17:06
+-- Versión del servidor: 5.7.14
+-- Versión de PHP: 5.6.25
+
+SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
+SET time_zone = "+00:00";
+
 
 /*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
-/*!40101 SET NAMES utf8 */;
-/*!40014 SET @OLD_FOREIGN_KEY_CHECKS=@@FOREIGN_KEY_CHECKS, FOREIGN_KEY_CHECKS=0 */;
-/*!40101 SET @OLD_SQL_MODE=@@SQL_MODE, SQL_MODE='NO_AUTO_VALUE_ON_ZERO' */;
+/*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
+/*!40101 SET @OLD_COLLATION_CONNECTION=@@COLLATION_CONNECTION */;
+/*!40101 SET NAMES utf8mb4 */;
 
--- Volcando estructura de base de datos para bd_servicios_publicos
-CREATE DATABASE IF NOT EXISTS `bd_servicios_publicos` /*!40100 DEFAULT CHARACTER SET latin1 */;
-USE `bd_servicios_publicos`;
+--
+-- Base de datos: `bd_servicios_publicos`
+--
 
+-- --------------------------------------------------------
 
--- Volcando estructura para tabla bd_servicios_publicos.cliente
-CREATE TABLE IF NOT EXISTS `cliente` (
+--
+-- Estructura de tabla para la tabla `cliente`
+--
+
+CREATE TABLE `cliente` (
   `codigo_cliente` int(11) NOT NULL,
   `fecha_afiliacion` date NOT NULL,
-  `id_persona` int(11) NOT NULL,
-  PRIMARY KEY (`codigo_cliente`),
-  KEY `FK_cliente_persona` (`id_persona`),
-  CONSTRAINT `FK_cliente_persona` FOREIGN KEY (`id_persona`) REFERENCES `persona` (`id_persona`)
+  `id_persona` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
--- Volcando datos para la tabla bd_servicios_publicos.cliente: ~0 rows (aproximadamente)
-/*!40000 ALTER TABLE `cliente` DISABLE KEYS */;
-/*!40000 ALTER TABLE `cliente` ENABLE KEYS */;
+-- --------------------------------------------------------
 
+--
+-- Estructura de tabla para la tabla `config_periodo`
+--
 
--- Volcando estructura para tabla bd_servicios_publicos.organizacion
-CREATE TABLE IF NOT EXISTS `organizacion` (
+CREATE TABLE `config_periodo` (
+  `idconfig_periodo` int(11) NOT NULL,
+  `dia_mes_inicio` int(11) DEFAULT NULL COMMENT 'día del mes en que se inicia el periodo.',
+  `dia_mes_cierre` int(11) DEFAULT NULL COMMENT 'día del mes en que se cierra el periodo.',
+  `dias_factura` varchar(45) DEFAULT NULL COMMENT 'cantidad de días a facturar a partir del día de inicio o día de registro.',
+  `estado` varchar(7) DEFAULT NULL COMMENT 'ACTIVO/INACTIVO'
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+-- --------------------------------------------------------
+
+--
+-- Estructura de tabla para la tabla `critica`
+--
+
+CREATE TABLE `critica` (
+  `idcritica` int(11) NOT NULL COMMENT 'autoincremental.',
+  `lectura_medidor_serial` int(11) NOT NULL,
+  `lectura_periodo_fecha_inicio` date NOT NULL,
+  `lectura_periodo_fecha_fin` date NOT NULL,
+  `lectura_ajustada` double DEFAULT NULL,
+  `estado` varchar(7) DEFAULT NULL COMMENT 'ACTIVA/INACTIVA/CERRADA',
+  `usuario_id_persona` int(11) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+-- --------------------------------------------------------
+
+--
+-- Estructura de tabla para la tabla `lectura`
+--
+
+CREATE TABLE `lectura` (
+  `medidor_serial` int(11) NOT NULL,
+  `periodo_fecha_inicio` date NOT NULL,
+  `periodo_fecha_fin` date NOT NULL,
+  `anterior_lectura` double NOT NULL,
+  `nueva_lectura` double NOT NULL,
+  `estado` varchar(7) NOT NULL COMMENT 'ACTIVA/INACTIVA',
+  `fecha_lectura` date NOT NULL,
+  `usuario_id_persona` int(11) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+-- --------------------------------------------------------
+
+--
+-- Estructura de tabla para la tabla `marca`
+--
+
+CREATE TABLE `marca` (
+  `idmarca` int(11) NOT NULL,
+  `marca` varchar(45) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+-- --------------------------------------------------------
+
+--
+-- Estructura de tabla para la tabla `medidor`
+--
+
+CREATE TABLE `medidor` (
+  `serial` int(11) NOT NULL COMMENT 'Por confirmar si se permiten caracter alfabeticos.',
+  `modelo_idmodelo` int(11) NOT NULL,
+  `fecha_registro` date NOT NULL,
+  `fecha_instalacion` date NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+-- --------------------------------------------------------
+
+--
+-- Estructura de tabla para la tabla `modelo`
+--
+
+CREATE TABLE `modelo` (
+  `idmodelo` int(11) NOT NULL,
+  `modelo` varchar(45) NOT NULL,
+  `marca_idmarca` int(11) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+-- --------------------------------------------------------
+
+--
+-- Estructura de tabla para la tabla `organizacion`
+--
+
+CREATE TABLE `organizacion` (
   `id_organizacion` int(11) NOT NULL,
   `nombre` varchar(50) NOT NULL,
   `direccion` varchar(50) NOT NULL,
   `telefono` double NOT NULL,
-  `correo` varchar(50) NOT NULL,
-  PRIMARY KEY (`id_organizacion`)
+  `correo` varchar(50) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
--- Volcando datos para la tabla bd_servicios_publicos.organizacion: ~3 rows (aproximadamente)
-/*!40000 ALTER TABLE `organizacion` DISABLE KEYS */;
-INSERT INTO `organizacion` (`id_organizacion`, `nombre`, `direccion`, `telefono`, `correo`) VALUES
-	(1, 'Empresa2', 'Calle falsa ', 4398765, 'empresa1@gmail.com'),
-	(2, 'Empresa 3', 'direc', 3241, 'cads@gmail.com'),
-	(34, 'asfd', 'asf', 343, 'asdf');
-/*!40000 ALTER TABLE `organizacion` ENABLE KEYS */;
+-- --------------------------------------------------------
 
+--
+-- Estructura de tabla para la tabla `periodo`
+--
 
--- Volcando estructura para tabla bd_servicios_publicos.persona
-CREATE TABLE IF NOT EXISTS `persona` (
+CREATE TABLE `periodo` (
+  `fecha_inicio` date NOT NULL COMMENT 'dia/mes/año',
+  `fecha_fin` date NOT NULL,
+  `estado` varchar(7) NOT NULL COMMENT 'ACTIVO/CERRADO',
+  `config_periodo_idconfig_periodo` int(11) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+-- --------------------------------------------------------
+
+--
+-- Estructura de tabla para la tabla `persona`
+--
+
+CREATE TABLE `persona` (
   `id_persona` int(11) NOT NULL,
   `tipo_documento` int(11) NOT NULL,
   `nombres` varchar(150) NOT NULL,
@@ -58,23 +156,20 @@ CREATE TABLE IF NOT EXISTS `persona` (
   `direccion` varchar(100) NOT NULL,
   `telefono1` double DEFAULT NULL,
   `telefono2` double DEFAULT NULL,
-  `correo` varchar(100) DEFAULT NULL,
-  PRIMARY KEY (`id_persona`),
-  KEY `FK_persona_tipo_documento` (`tipo_documento`),
-  CONSTRAINT `FK_persona_tipo_documento` FOREIGN KEY (`tipo_documento`) REFERENCES `tipo_documento` (`id`)
+  `correo` varchar(100) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
--- Volcando datos para la tabla bd_servicios_publicos.persona: ~0 rows (aproximadamente)
-/*!40000 ALTER TABLE `persona` DISABLE KEYS */;
-/*!40000 ALTER TABLE `persona` ENABLE KEYS */;
+-- --------------------------------------------------------
 
+--
+-- Estructura de tabla para la tabla `predio`
+--
 
--- Volcando estructura para tabla bd_servicios_publicos.predio
-CREATE TABLE IF NOT EXISTS `predio` (
-  `codigo_predio` int(11) NOT NULL AUTO_INCREMENT,
+CREATE TABLE `predio` (
+  `codigo_predio` int(11) NOT NULL,
   `direccion` varchar(50) DEFAULT NULL,
-  `tipo_predio_id` int(11),
-  `tipo_construccion_id` int(11),
+  `tipo_predio_id` int(11) DEFAULT NULL,
+  `tipo_construccion_id` int(11) DEFAULT NULL,
   `ficha_catastral` varchar(50) DEFAULT NULL,
   `matricula_inmobiliaria` varchar(50) DEFAULT NULL,
   `numero_predial_nacional` varchar(50) DEFAULT NULL,
@@ -92,7 +187,6 @@ CREATE TABLE IF NOT EXISTS `predio` (
   `manzana` varchar(50) DEFAULT NULL,
   `direccion_comercial` varchar(50) DEFAULT NULL,
   `direccion_catastral` varchar(50) DEFAULT NULL,
-  `posicion_inmueble` varchar(50) DEFAULT NULL,
   `estado_atipico` varchar(50) DEFAULT NULL,
   `estado_alcaldia` varchar(50) DEFAULT NULL,
   `desocupado` set('V','F') DEFAULT NULL,
@@ -104,150 +198,406 @@ CREATE TABLE IF NOT EXISTS `predio` (
   `periodo` int(11) DEFAULT NULL,
   `documentos_previos` varchar(50) DEFAULT NULL,
   `medido` set('V','F') DEFAULT NULL,
-  `estado_predio` set('Activo','Inactivo') NOT NULL,
-  PRIMARY KEY (`codigo_predio`),
-  KEY `FK_predio_tipo_predio` (`tipo_predio_id`),
-  KEY `FK_predio_tipo_construccion` (`tipo_construccion_id`),
-  CONSTRAINT `FK_predio_tipo_construccion` FOREIGN KEY (`tipo_construccion_id`) REFERENCES `tipo_construccion` (`id`),
-  CONSTRAINT `FK_predio_tipo_predio` FOREIGN KEY (`tipo_predio_id`) REFERENCES `tipo_predio` (`id`)
+  `estado_predio` set('Activo','Inactivo') NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
--- Volcando datos para la tabla bd_servicios_publicos.predio: ~0 rows (aproximadamente)
-/*!40000 ALTER TABLE `predio` DISABLE KEYS */;
-/*!40000 ALTER TABLE `predio` ENABLE KEYS */;
+-- --------------------------------------------------------
 
+--
+-- Estructura de tabla para la tabla `predio_has_medidor`
+--
 
--- Volcando estructura para tabla bd_servicios_publicos.predio_ruta
-CREATE TABLE IF NOT EXISTS `predio_ruta` (
+CREATE TABLE `predio_has_medidor` (
+  `predio_codigo_predio` int(11) NOT NULL,
+  `medidor_serial` int(11) NOT NULL,
+  `fecha_cambio` date NOT NULL,
+  `estado` varchar(8) NOT NULL COMMENT 'ACTIVO/INACTIVO'
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+-- --------------------------------------------------------
+
+--
+-- Estructura de tabla para la tabla `predio_ruta`
+--
+
+CREATE TABLE `predio_ruta` (
   `id_predio` int(11) NOT NULL,
   `id_ruta` int(11) NOT NULL,
   `fecha` date DEFAULT NULL,
-  `estado` set('Activo','Inactivo') DEFAULT NULL,
-  PRIMARY KEY (`id_ruta`,`id_predio`),
-  KEY `FK_predio_ruta_predio` (`id_predio`),
-  CONSTRAINT `FK_predio_ruta_predio` FOREIGN KEY (`id_predio`) REFERENCES `predio` (`codigo_predio`),
-  CONSTRAINT `FK_predio_ruta_ruta` FOREIGN KEY (`id_ruta`) REFERENCES `ruta` (`id`)
+  `estado` set('Activo','Inactivo') DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
--- Volcando datos para la tabla bd_servicios_publicos.predio_ruta: ~0 rows (aproximadamente)
-/*!40000 ALTER TABLE `predio_ruta` DISABLE KEYS */;
-/*!40000 ALTER TABLE `predio_ruta` ENABLE KEYS */;
+-- --------------------------------------------------------
 
+--
+-- Estructura de tabla para la tabla `predio_servicio`
+--
 
--- Volcando estructura para tabla bd_servicios_publicos.predio_servicio
-CREATE TABLE IF NOT EXISTS `predio_servicio` (
+CREATE TABLE `predio_servicio` (
   `codigo_predio` int(11) NOT NULL,
   `codigo_servicio` int(11) NOT NULL,
   `fecha_conexion` date NOT NULL,
-  `estado` set('V','F') NOT NULL,
-  PRIMARY KEY (`codigo_predio`,`codigo_servicio`),
-  KEY `FK__servicio` (`codigo_servicio`),
-  CONSTRAINT `FK__predio` FOREIGN KEY (`codigo_predio`) REFERENCES `predio` (`codigo_predio`),
-  CONSTRAINT `FK__servicio` FOREIGN KEY (`codigo_servicio`) REFERENCES `servicio` (`codigo`)
+  `estado` set('V','F') NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
--- Volcando datos para la tabla bd_servicios_publicos.predio_servicio: ~0 rows (aproximadamente)
-/*!40000 ALTER TABLE `predio_servicio` DISABLE KEYS */;
-/*!40000 ALTER TABLE `predio_servicio` ENABLE KEYS */;
+-- --------------------------------------------------------
 
+--
+-- Estructura de tabla para la tabla `rol`
+--
 
--- Volcando estructura para tabla bd_servicios_publicos.rol
-CREATE TABLE IF NOT EXISTS `rol` (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
-  `nombre` varchar(50) NOT NULL DEFAULT '0',
-  PRIMARY KEY (`id`)
+CREATE TABLE `rol` (
+  `id` int(11) NOT NULL,
+  `nombre` varchar(50) NOT NULL DEFAULT '0'
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
--- Volcando datos para la tabla bd_servicios_publicos.rol: ~0 rows (aproximadamente)
-/*!40000 ALTER TABLE `rol` DISABLE KEYS */;
-/*!40000 ALTER TABLE `rol` ENABLE KEYS */;
+-- --------------------------------------------------------
 
+--
+-- Estructura de tabla para la tabla `ruta`
+--
 
--- Volcando estructura para tabla bd_servicios_publicos.ruta
-CREATE TABLE IF NOT EXISTS `ruta` (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
+CREATE TABLE `ruta` (
+  `id` int(11) NOT NULL,
   `nombre` varchar(50) NOT NULL,
-  `descripcion` varchar(50) DEFAULT NULL,
-  PRIMARY KEY (`id`)
+  `descripcion` varchar(50) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
--- Volcando datos para la tabla bd_servicios_publicos.ruta: ~0 rows (aproximadamente)
-/*!40000 ALTER TABLE `ruta` DISABLE KEYS */;
-/*!40000 ALTER TABLE `ruta` ENABLE KEYS */;
+-- --------------------------------------------------------
 
+--
+-- Estructura de tabla para la tabla `servicio`
+--
 
--- Volcando estructura para tabla bd_servicios_publicos.servicio
-CREATE TABLE IF NOT EXISTS `servicio` (
-  `codigo` int(11) NOT NULL AUTO_INCREMENT,
+CREATE TABLE `servicio` (
+  `codigo` int(11) NOT NULL,
   `nombre` varchar(100) NOT NULL,
   `estado` char(1) NOT NULL,
-  `descripcion` varchar(200) DEFAULT NULL,
-  PRIMARY KEY (`codigo`)
-) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=latin1;
-
--- Volcando datos para la tabla bd_servicios_publicos.servicio: ~3 rows (aproximadamente)
-/*!40000 ALTER TABLE `servicio` DISABLE KEYS */;
-INSERT INTO `servicio` (`codigo`, `nombre`, `estado`, `descripcion`) VALUES
-	(1, 'Servicio modificado', 'A', 'servicio de prueba'),
-	(2, 'servicio 2', 'A', 'servicio de prueba 2'),
-	(3, 'servicio 3', 'A', 'este servicio');
-/*!40000 ALTER TABLE `servicio` ENABLE KEYS */;
-
-
--- Volcando estructura para tabla bd_servicios_publicos.tipo_construccion
-CREATE TABLE IF NOT EXISTS `tipo_construccion` (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
-  `nombre` varchar(50) DEFAULT NULL,
-  PRIMARY KEY (`id`)
+  `descripcion` varchar(200) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
--- Volcando datos para la tabla bd_servicios_publicos.tipo_construccion: ~0 rows (aproximadamente)
-/*!40000 ALTER TABLE `tipo_construccion` DISABLE KEYS */;
-/*!40000 ALTER TABLE `tipo_construccion` ENABLE KEYS */;
+-- --------------------------------------------------------
 
+--
+-- Estructura de tabla para la tabla `tipo_construccion`
+--
 
--- Volcando estructura para tabla bd_servicios_publicos.tipo_documento
-CREATE TABLE IF NOT EXISTS `tipo_documento` (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
-  `nombre` varchar(50) NOT NULL,
-  PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=latin1;
-
--- Volcando datos para la tabla bd_servicios_publicos.tipo_documento: ~1 rows (aproximadamente)
-/*!40000 ALTER TABLE `tipo_documento` DISABLE KEYS */;
-INSERT INTO `tipo_documento` (`id`, `nombre`) VALUES
-	(1, 'Cédula');
-/*!40000 ALTER TABLE `tipo_documento` ENABLE KEYS */;
-
-
--- Volcando estructura para tabla bd_servicios_publicos.tipo_predio
-CREATE TABLE IF NOT EXISTS `tipo_predio` (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
-  `nombre` varchar(50) DEFAULT NULL,
-  PRIMARY KEY (`id`)
+CREATE TABLE `tipo_construccion` (
+  `id` int(11) NOT NULL,
+  `nombre` varchar(50) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
--- Volcando datos para la tabla bd_servicios_publicos.tipo_predio: ~0 rows (aproximadamente)
-/*!40000 ALTER TABLE `tipo_predio` DISABLE KEYS */;
-/*!40000 ALTER TABLE `tipo_predio` ENABLE KEYS */;
+-- --------------------------------------------------------
 
+--
+-- Estructura de tabla para la tabla `tipo_documento`
+--
 
--- Volcando estructura para tabla bd_servicios_publicos.usuario
-CREATE TABLE IF NOT EXISTS `usuario` (
+CREATE TABLE `tipo_documento` (
+  `id` int(11) NOT NULL,
+  `nombre` varchar(50) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+-- --------------------------------------------------------
+
+--
+-- Estructura de tabla para la tabla `tipo_predio`
+--
+
+CREATE TABLE `tipo_predio` (
+  `id` int(11) NOT NULL,
+  `nombre` varchar(50) DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+-- --------------------------------------------------------
+
+--
+-- Estructura de tabla para la tabla `usuario`
+--
+
+CREATE TABLE `usuario` (
   `id_persona` int(11) NOT NULL,
   `usuario` varchar(50) NOT NULL,
   `contrasena` varchar(30) NOT NULL,
   `rol` int(11) NOT NULL,
-  `fecha_creacion` date NOT NULL,
-  PRIMARY KEY (`id_persona`),
-  KEY `FK_usuario_rol` (`rol`),
-  CONSTRAINT `FK_usuario_persona` FOREIGN KEY (`id_persona`) REFERENCES `persona` (`id_persona`),
-  CONSTRAINT `FK_usuario_rol` FOREIGN KEY (`rol`) REFERENCES `rol` (`id`)
+  `fecha_creacion` date NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
--- Volcando datos para la tabla bd_servicios_publicos.usuario: ~0 rows (aproximadamente)
-/*!40000 ALTER TABLE `usuario` DISABLE KEYS */;
-/*!40000 ALTER TABLE `usuario` ENABLE KEYS */;
-/*!40101 SET SQL_MODE=IFNULL(@OLD_SQL_MODE, '') */;
-/*!40014 SET FOREIGN_KEY_CHECKS=IF(@OLD_FOREIGN_KEY_CHECKS IS NULL, 1, @OLD_FOREIGN_KEY_CHECKS) */;
+--
+-- Índices para tablas volcadas
+--
+
+--
+-- Indices de la tabla `cliente`
+--
+ALTER TABLE `cliente`
+  ADD PRIMARY KEY (`codigo_cliente`),
+  ADD KEY `FK_cliente_persona` (`id_persona`);
+
+--
+-- Indices de la tabla `config_periodo`
+--
+ALTER TABLE `config_periodo`
+  ADD PRIMARY KEY (`idconfig_periodo`);
+
+--
+-- Indices de la tabla `critica`
+--
+ALTER TABLE `critica`
+  ADD PRIMARY KEY (`idcritica`,`lectura_medidor_serial`,`lectura_periodo_fecha_inicio`,`lectura_periodo_fecha_fin`),
+  ADD KEY `fk_critica_lectura1_idx` (`lectura_medidor_serial`,`lectura_periodo_fecha_inicio`,`lectura_periodo_fecha_fin`),
+  ADD KEY `fk_critica_usuario1_idx` (`usuario_id_persona`);
+
+--
+-- Indices de la tabla `lectura`
+--
+ALTER TABLE `lectura`
+  ADD PRIMARY KEY (`medidor_serial`,`periodo_fecha_inicio`,`periodo_fecha_fin`),
+  ADD KEY `fk_predio_has_medidor1_medidor1_idx` (`medidor_serial`),
+  ADD KEY `fk_lectura_periodo1_idx` (`periodo_fecha_inicio`,`periodo_fecha_fin`),
+  ADD KEY `fk_lectura_usuario1_idx` (`usuario_id_persona`);
+
+--
+-- Indices de la tabla `marca`
+--
+ALTER TABLE `marca`
+  ADD PRIMARY KEY (`idmarca`);
+
+--
+-- Indices de la tabla `medidor`
+--
+ALTER TABLE `medidor`
+  ADD PRIMARY KEY (`serial`),
+  ADD KEY `fk_medidor_modelo1_idx` (`modelo_idmodelo`);
+
+--
+-- Indices de la tabla `modelo`
+--
+ALTER TABLE `modelo`
+  ADD PRIMARY KEY (`idmodelo`),
+  ADD KEY `fk_modelo_marca1_idx` (`marca_idmarca`);
+
+--
+-- Indices de la tabla `organizacion`
+--
+ALTER TABLE `organizacion`
+  ADD PRIMARY KEY (`id_organizacion`);
+
+--
+-- Indices de la tabla `periodo`
+--
+ALTER TABLE `periodo`
+  ADD PRIMARY KEY (`fecha_inicio`,`fecha_fin`),
+  ADD KEY `fk_periodo_config_periodo1_idx` (`config_periodo_idconfig_periodo`);
+
+--
+-- Indices de la tabla `persona`
+--
+ALTER TABLE `persona`
+  ADD PRIMARY KEY (`id_persona`),
+  ADD KEY `FK_persona_tipo_documento` (`tipo_documento`);
+
+--
+-- Indices de la tabla `predio`
+--
+ALTER TABLE `predio`
+  ADD PRIMARY KEY (`codigo_predio`),
+  ADD KEY `FK_predio_tipo_predio` (`tipo_predio_id`),
+  ADD KEY `FK_predio_tipo_construccion` (`tipo_construccion_id`);
+
+--
+-- Indices de la tabla `predio_has_medidor`
+--
+ALTER TABLE `predio_has_medidor`
+  ADD PRIMARY KEY (`predio_codigo_predio`,`medidor_serial`),
+  ADD KEY `fk_predio_has_medidor_medidor1_idx` (`medidor_serial`),
+  ADD KEY `fk_predio_has_medidor_predio1_idx` (`predio_codigo_predio`);
+
+--
+-- Indices de la tabla `predio_ruta`
+--
+ALTER TABLE `predio_ruta`
+  ADD PRIMARY KEY (`id_ruta`,`id_predio`),
+  ADD KEY `FK_predio_ruta_predio` (`id_predio`);
+
+--
+-- Indices de la tabla `predio_servicio`
+--
+ALTER TABLE `predio_servicio`
+  ADD PRIMARY KEY (`codigo_predio`,`codigo_servicio`),
+  ADD KEY `FK__servicio` (`codigo_servicio`);
+
+--
+-- Indices de la tabla `rol`
+--
+ALTER TABLE `rol`
+  ADD PRIMARY KEY (`id`);
+
+--
+-- Indices de la tabla `ruta`
+--
+ALTER TABLE `ruta`
+  ADD PRIMARY KEY (`id`);
+
+--
+-- Indices de la tabla `servicio`
+--
+ALTER TABLE `servicio`
+  ADD PRIMARY KEY (`codigo`);
+
+--
+-- Indices de la tabla `tipo_construccion`
+--
+ALTER TABLE `tipo_construccion`
+  ADD PRIMARY KEY (`id`);
+
+--
+-- Indices de la tabla `tipo_documento`
+--
+ALTER TABLE `tipo_documento`
+  ADD PRIMARY KEY (`id`);
+
+--
+-- Indices de la tabla `tipo_predio`
+--
+ALTER TABLE `tipo_predio`
+  ADD PRIMARY KEY (`id`);
+
+--
+-- Indices de la tabla `usuario`
+--
+ALTER TABLE `usuario`
+  ADD PRIMARY KEY (`id_persona`),
+  ADD KEY `FK_usuario_rol` (`rol`);
+
+--
+-- AUTO_INCREMENT de las tablas volcadas
+--
+
+--
+-- AUTO_INCREMENT de la tabla `critica`
+--
+ALTER TABLE `critica`
+  MODIFY `idcritica` int(11) NOT NULL AUTO_INCREMENT COMMENT 'autoincremental.';
+--
+-- AUTO_INCREMENT de la tabla `predio`
+--
+ALTER TABLE `predio`
+  MODIFY `codigo_predio` int(11) NOT NULL AUTO_INCREMENT;
+--
+-- AUTO_INCREMENT de la tabla `rol`
+--
+ALTER TABLE `rol`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+--
+-- AUTO_INCREMENT de la tabla `ruta`
+--
+ALTER TABLE `ruta`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+--
+-- AUTO_INCREMENT de la tabla `servicio`
+--
+ALTER TABLE `servicio`
+  MODIFY `codigo` int(11) NOT NULL AUTO_INCREMENT;
+--
+-- AUTO_INCREMENT de la tabla `tipo_construccion`
+--
+ALTER TABLE `tipo_construccion`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+--
+-- AUTO_INCREMENT de la tabla `tipo_documento`
+--
+ALTER TABLE `tipo_documento`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+--
+-- AUTO_INCREMENT de la tabla `tipo_predio`
+--
+ALTER TABLE `tipo_predio`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+--
+-- Restricciones para tablas volcadas
+--
+
+--
+-- Filtros para la tabla `cliente`
+--
+ALTER TABLE `cliente`
+  ADD CONSTRAINT `FK_cliente_persona` FOREIGN KEY (`id_persona`) REFERENCES `persona` (`id_persona`);
+
+--
+-- Filtros para la tabla `critica`
+--
+ALTER TABLE `critica`
+  ADD CONSTRAINT `fk_critica_lectura1` FOREIGN KEY (`lectura_medidor_serial`,`lectura_periodo_fecha_inicio`,`lectura_periodo_fecha_fin`) REFERENCES `lectura` (`medidor_serial`, `periodo_fecha_inicio`, `periodo_fecha_fin`) ON DELETE NO ACTION ON UPDATE NO ACTION,
+  ADD CONSTRAINT `fk_critica_usuario1` FOREIGN KEY (`usuario_id_persona`) REFERENCES `usuario` (`id_persona`) ON DELETE NO ACTION ON UPDATE NO ACTION;
+
+--
+-- Filtros para la tabla `lectura`
+--
+ALTER TABLE `lectura`
+  ADD CONSTRAINT `fk_lectura_periodo1` FOREIGN KEY (`periodo_fecha_inicio`,`periodo_fecha_fin`) REFERENCES `periodo` (`fecha_inicio`, `fecha_fin`) ON DELETE NO ACTION ON UPDATE NO ACTION,
+  ADD CONSTRAINT `fk_lectura_usuario1` FOREIGN KEY (`usuario_id_persona`) REFERENCES `usuario` (`id_persona`) ON DELETE NO ACTION ON UPDATE NO ACTION,
+  ADD CONSTRAINT `fk_predio_has_medidor1_medidor1` FOREIGN KEY (`medidor_serial`) REFERENCES `medidor` (`serial`) ON DELETE NO ACTION ON UPDATE NO ACTION;
+
+--
+-- Filtros para la tabla `medidor`
+--
+ALTER TABLE `medidor`
+  ADD CONSTRAINT `fk_medidor_modelo1` FOREIGN KEY (`modelo_idmodelo`) REFERENCES `modelo` (`idmodelo`) ON DELETE NO ACTION ON UPDATE NO ACTION;
+
+--
+-- Filtros para la tabla `modelo`
+--
+ALTER TABLE `modelo`
+  ADD CONSTRAINT `fk_modelo_marca1` FOREIGN KEY (`marca_idmarca`) REFERENCES `marca` (`idmarca`) ON DELETE NO ACTION ON UPDATE NO ACTION;
+
+--
+-- Filtros para la tabla `periodo`
+--
+ALTER TABLE `periodo`
+  ADD CONSTRAINT `fk_periodo_config_periodo1` FOREIGN KEY (`config_periodo_idconfig_periodo`) REFERENCES `config_periodo` (`idconfig_periodo`) ON DELETE NO ACTION ON UPDATE NO ACTION;
+
+--
+-- Filtros para la tabla `persona`
+--
+ALTER TABLE `persona`
+  ADD CONSTRAINT `FK_persona_tipo_documento` FOREIGN KEY (`tipo_documento`) REFERENCES `tipo_documento` (`id`);
+
+--
+-- Filtros para la tabla `predio`
+--
+ALTER TABLE `predio`
+  ADD CONSTRAINT `FK_predio_tipo_construccion` FOREIGN KEY (`tipo_construccion_id`) REFERENCES `tipo_construccion` (`id`),
+  ADD CONSTRAINT `FK_predio_tipo_predio` FOREIGN KEY (`tipo_predio_id`) REFERENCES `tipo_predio` (`id`);
+
+--
+-- Filtros para la tabla `predio_has_medidor`
+--
+ALTER TABLE `predio_has_medidor`
+  ADD CONSTRAINT `fk_predio_has_medidor_medidor1` FOREIGN KEY (`medidor_serial`) REFERENCES `medidor` (`serial`) ON DELETE NO ACTION ON UPDATE NO ACTION,
+  ADD CONSTRAINT `fk_predio_has_medidor_predio1` FOREIGN KEY (`predio_codigo_predio`) REFERENCES `predio` (`codigo_predio`) ON DELETE NO ACTION ON UPDATE NO ACTION;
+
+--
+-- Filtros para la tabla `predio_ruta`
+--
+ALTER TABLE `predio_ruta`
+  ADD CONSTRAINT `FK_predio_ruta_predio` FOREIGN KEY (`id_predio`) REFERENCES `predio` (`codigo_predio`),
+  ADD CONSTRAINT `FK_predio_ruta_ruta` FOREIGN KEY (`id_ruta`) REFERENCES `ruta` (`id`);
+
+--
+-- Filtros para la tabla `predio_servicio`
+--
+ALTER TABLE `predio_servicio`
+  ADD CONSTRAINT `FK__predio` FOREIGN KEY (`codigo_predio`) REFERENCES `predio` (`codigo_predio`),
+  ADD CONSTRAINT `FK__servicio` FOREIGN KEY (`codigo_servicio`) REFERENCES `servicio` (`codigo`);
+
+--
+-- Filtros para la tabla `usuario`
+--
+ALTER TABLE `usuario`
+  ADD CONSTRAINT `FK_usuario_persona` FOREIGN KEY (`id_persona`) REFERENCES `persona` (`id_persona`),
+  ADD CONSTRAINT `FK_usuario_rol` FOREIGN KEY (`rol`) REFERENCES `rol` (`id`);
+
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
+/*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
+/*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;

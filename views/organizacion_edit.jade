@@ -2,20 +2,24 @@
 
 block content  	
 	section
-		form(method='post')			
+		form(role="form" method='post')			
 			if organizacion.length == 0
 				p No existen organizaciones en la base de datos
-			else			
-				label Nombre:
-				input(name='nombre', value='#{organizacion[0].nombre}')			
-				br
-				label Direccion:
-				input(name='direccion', value='#{organizacion[0].direccion}')
-				br
-				label Teléfono:
-				input(name='telefono', value='#{organizacion[0].telefono}')
-				br
-				label Correo:
-				input(name='correo', value='#{organizacion[0].correo}')
-				br
-				input(type='submit', value='Actualizar')
+			else
+				.form-group			
+					label Nombre:
+					input.form-control(name='nombre', value='#{organizacion[0].nombre}')		
+					br
+				.form-group
+					label Direccion:
+					input.form-control(name='direccion', value='#{organizacion[0].direccion}')
+					br
+				.form-group
+					label Teléfono:
+					input.form-control(name='telefono', value='#{organizacion[0].telefono}')
+					br
+				.form-group
+					label Correo:
+					input.form-control(name='correo', value='#{organizacion[0].correo}')
+					br
+				input.btn.btn-default(type='submit', value='Actualizar')

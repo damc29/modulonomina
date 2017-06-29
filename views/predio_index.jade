@@ -1,0 +1,26 @@
+extends layout
+
+block content  	
+	h2 Tabla Predios
+	section
+		a(href='predio/nueva') Crear
+		if predios.length == 0
+			p No existen personas en la base de datos
+		else
+			table.table.table-bordered
+				tr
+					th Cod
+					th Estrato					
+					th Direccion
+					th Habitaciones				
+					th Area Construida
+					th Editar
+				for predio in predios
+					tr
+						td=predio.codigo_predio
+						td=predio.estrato						  
+						td=predio.direccion                
+						td=predio.unidades_habitacionales						
+						td=predio.area_construida
+						td 
+							a(href='predio/editar/#{predio.codigo_predio}') Editar

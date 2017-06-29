@@ -63,10 +63,10 @@ app.post('/organizacion/nueva', organizacion.guardar);
 app.get('/organizacion/editar/:id', organizacion.edit);
 app.post('/organizacion/editar/:id', organizacion.save_edit);
 //Organizacion RESTAPI++++++++++++++++++++++++++++++++++++++++++++
-app.get('/api/organizacion', organizacion.listar);
+/*app.get('/api/organizacion', organizacion.listar);
 app.get('/api/organizacion/:id', organizacion.consultar);
 app.post('/api/organizacion', organizacion.crear);
-app.put('/api/organizacion/:id', organizacion.editar);
+app.put('/api/organizacion/:id', organizacion.editar);*/
 //+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
 //ServicioController++++++++++++++++++++++++++++++++++++++++++++
@@ -82,3 +82,11 @@ app.get('/api/servicio/:id', servicio.consultar);
 app.post('/api/servicio', servicio.crear);
 app.put('/api/servicio/:id', servicio.editar);
 //+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+
+//ServicioController++++++++++++++++++++++++++++++++++++++++++++
+/*var predio = require('./controllers/predioController');
+app.get('/predio', predio.home);
+app.get('/predio/nueva', predio.add);
+app.post('/predio/nueva', predio.guardar);
+app.get('/predio/editar/:id', predio.edit);
+app.post('/predio/editar/:id', predio.save_edit);*/
